@@ -1,236 +1,232 @@
-flux = require 'flux'
-require "TLfres"
+local flux = require 'vendor/flux'
+local push = require 'vendor/push'
+require 'vendor/slam'
+local lovebird = require 'vendor/lovebird'
+lovebird.port = 3333 -- http://localhost:3333
+
+function getDisplayObject(img, x, y, pivotX, pivotY)
+   return {
+      img = img,
+      pivot = {x=pivotX, y=pivotY},
+      local_transform = {
+         position = {x=x, y=y},
+         scale = {x=1, y=1},
+         radian = 0,
+      },
+      world_transform = {
+         position = {x=0, y=0},
+         scale = {x=1, y=1},
+         radian = 0,
+      },
+   }
+end
+
+function pointInCircle(x,y, circle)
+   if not x or not y then return false end
+   local dx = x - circle.x
+   local dy = y - circle.y
+   local dist = math.sqrt(dx * dx + dy * dy)
+   return dist < circle.radius
+end
+
+
+function makeGoose(x, y, startX, endX, startY, scale)
+   local geese = {}
+   geese.waterlevel = {y=160}
+   geese.dx = 0
+   geese.y = y
+   geese.x = x
+   geese.scaleX = scale
+   geese.scaleY = scale
+   geese.scale = scale
+   geese.geese_canvas = nil
+   geese.temp_canvas = nil
+   geese.sound_instance = nil
+   geese.old_x = nil
+   geese.startX = startX
+   geese.endX = endX
+   geese.startY = startY
+
+   geese.geese_root = getDisplayObject(nil, 150,200,0.5 * geese_torso_img:getWidth(), 1.0 * geese_torso_img:getHeight())
+   geese.geese_back_foot = getDisplayObject(geese_foot_img, 0, -25, 1.0 * geese_foot_img:getWidth(), 0 * geese_foot_img:getHeight())
+   geese.geese_back_foot.local_transform.radian = math.rad(-40);
+   geese.geese_front_foot = getDisplayObject(geese_foot_img, 15, -10, 1.0 * geese_foot_img:getWidth(), 0 * geese_foot_img:getHeight())
+   geese.geese_front_foot.local_transform.radian = math.rad(-40);
+   geese.geese_torso = getDisplayObject(geese_torso_img, 0, 0, 0.5 * geese_torso_img:getWidth(), 1.0 * geese_torso_img:getHeight())
+   geese.geese_eye = getDisplayObject(geese_eye_img, -65, -155, 0.5 * geese_eye_img:getWidth(), 1.0 * geese_eye_img:getHeight())
+   geese.geese_beak_top = getDisplayObject(geese_beak_top_img, -78, -160, 1.0 * geese_beak_top_img:getWidth(), 1.0 * geese_beak_top_img:getHeight() )
+   geese.geese_beak_top.local_transform.radian = math.rad(-20);
+   geese.geese_beak_bottom = getDisplayObject(geese_beak_bottom_img, -78, -160, 1.0 * geese_beak_bottom_img:getWidth(), 0 * geese_beak_bottom_img:getHeight() )
+   geese.geese_beak_bottom.local_transform.radian = math.rad(10);
+   geese.geese_gradient = getDisplayObject(geese_gradient_img, 0, 50, 0.5 * geese_gradient_img:getWidth(), 1.0 * geese_gradient_img:getHeight())
+   geese.geese_gradient.multiply = true
+
+   addChild(geese.geese_root, geese.geese_back_foot)
+   addChild(geese.geese_root, geese.geese_torso)
+   addChild(geese.geese_root, geese.geese_front_foot)
+   addChild(geese.geese_torso, geese.geese_beak_top)
+   addChild(geese.geese_torso, geese.geese_beak_bottom)
+   addChild(geese.geese_torso, geese.geese_eye)
+
+   return geese
+end
+
+
 
 function love.load()
-   TLfres.setScreen({w=1024*2, h=768*2}, 1024*2, false, false)
-   love.graphics.setBackgroundColor(0x7A, 0xB4, 0xF8)
-   -- mallard1 = love.graphics.newImage("images/tree1.png")
-   -- sun = love.graphics.newImage("images/tree2.png")
-   -- cloud1 = love.graphics.newImage("images/bushes_front.png")
 
-   geese_torso_img = love.graphics.newImage("images/geese_torso.png")
-   geese_torso_img:setFilter('nearest','nearest')
+
+
+   music = love.audio.newSource('sounds/clarinet_duck_jaunty.ogg', 'stream')
+   music:setLooping(true)
+   music:setPitch(1.0)
+   love.audio.play(music)
+
+   --geese_honk = love.audio.newSource({'sounds/geese_honk_1.ogg', 'sounds/geese_honk_1.ogg', 'sounds/geese_honk_3.ogg', 'sounds/geese_honk_4.ogg'}, 'static')
+
+   --TLfres.setScreen({w=1024, h=768}, 1024*2, false, false)
+   local gameWidth, gameHeight = 1024*2, 768*2 --fixed game resolution
+   local windowWidth, windowHeight = love.window.getDesktopDimensions()
+   -- love.window.setMode(windowWidth, windowHeight, {highdpi=true})
+   push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {highdpi=true, canvas=true})
+   love.graphics.setBackgroundColor(0x7A, 0xB4, 0xF8)
+
+
+   geese_honk1 = love.audio.newSource({'sounds/geese_honk_1.ogg'}, 'static')
+
+   geese_torso_img = love.graphics.newImage("images/geese_torso2.png")
    geese_eye_img = love.graphics.newImage("images/geese_eye.png")
    geese_foot_img = love.graphics.newImage("images/geese_foot.png")
    geese_beak_top_img = love.graphics.newImage("images/geese_beak_top.png")
    geese_beak_bottom_img = love.graphics.newImage("images/geese_beak_bottom.png")
-   geese_foot_img:setFilter('nearest','nearest')
+   geese_beak_bottom_img:setFilter('nearest','nearest')
    geese_gradient_img = love.graphics.newImage("images/gradient.png")
 
-
    backdrop_img = love.graphics.newImage("images/backdrop.png")
-   bushes_back_img = love.graphics.newImage("images/bushes_back.png")
+   bushes_back_img = love.graphics.newImage("bushes_back.png")
    bushes_front_img = love.graphics.newImage("images/bushes_front.png")
+   sun_img = love.graphics.newImage("images/sun.png")
 
    tree_1_img = love.graphics.newImage("images/tree1.png")
    tree_2_img = love.graphics.newImage("images/tree2.png")
 
    pond_img = love.graphics.newImage("images/pond.png")
 
-   -- geese_eye
-   -- geese_torso
-   -- geese_foot
-   -- geese_beak_bottom
-   -- geese_beak_top
-   -- geese_eye
+   backdrop = getDisplayObject(backdrop_img, 0, 0)
+   bushes_back = getDisplayObject(bushes_back_img, 160, 950)
+   bushes_front = getDisplayObject(bushes_front_img, 110, 940)
+   tree1 = getDisplayObject(tree_1_img, 20, 100)
+   tree2 = getDisplayObject(tree_2_img, 1050, 100)
+   pond = getDisplayObject(pond_img, 150, 1100)
+   sun = getDisplayObject(sun_img, 1700, 200, 0.5 * sun_img:getWidth(),  0.5 * sun_img:getHeight())
 
-   backdrop = {
-      name="backdrop",
-      img = backdrop_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=0, y=0},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   bushes_back = {
-      name="bushes_back",
-      img = bushes_back_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=160, y=950},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   bushes_front = {
-      name="bushes_front",
-      img = bushes_front_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=110, y=940},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   tree1 = {
-      name="tree1",
-      img = tree_1_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=20, y=100},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   tree2 = {
-      name="tree2",
-      img = tree_2_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=1050, y=100},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-
-
-   pond = {
-      name="pond",
-      img = pond_img,
-      pivot = {x=0, y=0},
-      local_transform = {
-         position = {x=150, y=1100},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-
-   geese_root = {
-      name="root",
-      img = nil,
-      pivot = {x=0.5 * geese_torso_img:getWidth(), y=1.0 * geese_torso_img:getHeight()},
-      local_transform = {
-         position = {x=1024, y=500},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   geese_back_foot = {
-      name="back_foot",
-      img = geese_foot_img,
-      pivot = {x=1.0 * geese_foot_img:getWidth(), y=0 * geese_foot_img:getHeight()},
-      local_transform = {
-         position = {x=0, y=-25},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   geese_front_foot = {
-      name="front_foot",
-      img = geese_foot_img,
-      pivot = {x=1.0 * geese_foot_img:getWidth(), y=0 * geese_foot_img:getHeight()},
-      local_transform = {
-         position = {x=15, y=-10},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   geese_torso = {
-      name="torso",
-      img = geese_torso_img,
-      pivot = {x=0.5 * geese_torso_img:getWidth(), y=1.0 * geese_torso_img:getHeight()},
-      local_transform = {
-         position = {x=0, y=0},
-         scale = {x=1, y=1},
-         radian = 0,
-      },
-   }
-   geese_eye = {
-      name="eye",
-      img = geese_eye_img,
-      pivot = {x=0.5 * geese_eye_img:getWidth(), y=1.0 * geese_eye_img:getHeight()},
-      local_transform = {
-         position = {x=-65, y=-155},
-         scale = {x=1.0, y=1.0},
-         radian = 0,
-      },
-   }
-   geese_beak_top = {
-      name="eye",
-      img = geese_beak_top_img,
-      pivot = {x=1.0 * geese_beak_top_img:getWidth(), y=1.0 * geese_beak_top_img:getHeight()},
-      local_transform = {
-         position = {x=-75, y=-160},
-         scale = {x=1.0, y=1.0},
-         radian = 0,
-      },
-   }
-   geese_beak_bottom = {
-      name="eye",
-      img = geese_beak_bottom_img,
-      pivot = {x=1.0 * geese_beak_bottom_img:getWidth(), y=0 * geese_beak_bottom_img:getHeight()},
-      local_transform = {
-         position = {x=-75, y=-160},
-         scale = {x=1.0, y=1.0},
-         radian = 0,
-      },
-   }
-   geese_gradient = {
-      name="gradient",
-      multiply = true,
-      img = geese_gradient_img,
-      pivot = {x=0.5 * geese_gradient_img:getWidth(), y=1.0 * geese_gradient_img:getHeight()},
-      local_transform = {
-         position = {x=0, y=50},
-         scale = {x=1.0, y=1.0},
-         radian = 0,
-      },
-   }
-
-   init_world_transform(backdrop)
-   init_world_transform(bushes_back)
-   init_world_transform(bushes_front)
-   init_world_transform(pond)
-   init_world_transform(tree1)
-   init_world_transform(tree2)
-
-   init_world_transform(geese_root)
-   init_world_transform(geese_back_foot)
-   init_world_transform(geese_torso)
-   init_world_transform(geese_front_foot)
-   init_world_transform(geese_eye)
-   init_world_transform(geese_beak_top)
-   init_world_transform(geese_beak_bottom)
-   init_world_transform(geese_gradient)
 
 
    addChild(backdrop, pond)
+   addChild(backdrop, sun)
    addChild(backdrop, bushes_back)
    addChild(backdrop, tree1)
    addChild(backdrop, tree2)
    addChild(backdrop, bushes_front)
 
 
-   addChild(backdrop, geese_root)
-   addChild(geese_root, geese_back_foot)
-   addChild(geese_root, geese_torso)
-   addChild(geese_root, geese_front_foot)
-   addChild(geese_torso, geese_beak_top)
-   addChild(geese_torso, geese_beak_bottom)
-   addChild(geese_torso, geese_eye)
 
-   --addChild(geese_root, geese_gradient)
-   -- flux.to(root.local_transform, 10.0, {radian = math.rad(360)}):delay(0.5)
-   -- flux.to(child.local_transform, 3.7, {radian = math.rad(360*5) }):delay(2)
-   -- flux.to(child.local_transform.scale, 4.7, {x=0.7, y=0.7 }):delay(2)
-   -- flux.to(child.local_transform.scale, .7, {x=1, y=1 }):delay(7)
-   -- flux.to(grand_child.local_transform.scale, 4.7, {x=1.0/0.7, y=1.0/0.7 }):delay(2)
-   -- flux.to(grand_child.local_transform.scale, 2, {x=1.0, y=1.0 }):delay(7)
-   flux.to( geese_front_foot.local_transform, 5.7, {radian = math.rad(-360*6)}):delay(3)
+   multiple_geese = {}
+   local geese = makeGoose(500,1200, 500,1600,1200, 1.1)
+   multiple_geese[1] = geese
+   wobble(geese)
+   swim_paddle_feet(geese)
+   swim(geese)
 
+   local geese4 = makeGoose(1400, 1250, 500,1600,1250, 1.2)
+   multiple_geese[2] = geese4
+   wobble(geese4)
+   swim_paddle_feet(geese4)
+   swim(geese4)
 
-   canvas = love.graphics.newCanvas(600, 600)
-   love.graphics.setCanvas(canvas)
-   love.graphics.clear()
-   love.graphics.draw(geese_torso.img, 200, 200, 0, 1, 1, geese_torso.pivot.x, geese_torso.pivot.y)
-   love.graphics.setBlendMode("multiply")
-   love.graphics.draw(geese_gradient.img, 100, 70, 0, 1, 1.5, 0, 0)
-   love.graphics.setBlendMode("alpha")
-   love.graphics.setCanvas()
+   local geese2 = makeGoose(800, 1300, 500,1600, 1300, 1.3)
+   multiple_geese[3] = geese2
+   wobble(geese2)
+   swim_paddle_feet(geese2)
+   swim(geese2)
+
+   local geese3 = makeGoose(1000, 1400, 500,1600, 1400, 1.4)
+   multiple_geese[4] = geese3
+   wobble(geese3)
+   swim_paddle_feet(geese3)
+   swim(geese3)
 end
 
+
+function growShrinkSun()
+   flux.to(sun.local_transform.scale, 0.5, {x=1.3, y=1.3})
+   flux.to(sun.local_transform.scale, 1, {x=1, y=1}):delay(0.5)
+
+end
+
+
+function quak(geese3)
+   print("geese beak top id: ", geese3.geese_beak_top)
+   flux.to(geese3.geese_beak_top.local_transform, 0.4, {radian=math.rad(10)})
+   flux.to(geese3.geese_beak_top.local_transform, 0.2, {radian=math.rad(-20)}):delay(0.4)
+
+   flux.to(geese3.geese_beak_bottom.local_transform, 0.4, {radian=math.rad(-10)})
+   flux.to(geese3.geese_beak_bottom.local_transform, 0.2, {radian=math.rad(10)}):delay(0.4)
+end
+
+function swim_paddle_feet(geese2)
+   local function closure() swim_paddle_feet(geese2) end
+
+   local duration = 0.5
+   --if (math.abs(geese2.dx) < 1 ) then duration = 1.0 end
+
+   if (geese2.geese_back_foot.local_transform.radian <= math.rad(-40)) then
+      flux.to(geese2.geese_back_foot.local_transform, duration, {radian=math.rad(40)})
+      flux.to(geese2.geese_front_foot.local_transform, duration, {radian=math.rad(-40)}):oncomplete(closure)
+   else
+      flux.to(geese2.geese_back_foot.local_transform, duration, {radian=math.rad(-41)})
+      flux.to(geese2.geese_front_foot.local_transform, duration, {radian=math.rad(40)}):oncomplete(closure)
+   end
+end
+
+
+function swim(geese2)
+   --local distance = (geese2.endX - geese2.startX)
+   --print(distance/9) -- 122px per sec.
+   local function closure() swim(geese2) end
+   if (geese2.x == geese2.startX) then
+      flux.to(geese2, 0.4, {scaleX = geese2.scale*-1}):ease("quadinout")
+      flux.to(geese2, 9, {x=geese2.endX}):ease("quadinout"):delay(0.5):oncomplete(closure)
+   elseif (geese2.x == geese2.endX) then
+      flux.to(geese2, 0.4, {scaleX = geese2.scale}):ease("quadinout")
+      flux.to(geese2, 9, {x=geese2.startX}):ease("quadinout"):delay(0.5):oncomplete(closure)
+   else
+
+      if math.random() < 0.5 then
+         local distance = (geese2.endX - geese2.x)
+         flux.to(geese2, 0.4, {scaleX = geese2.scale*-1}):ease("quadinout")
+         flux.to(geese2, distance/122, {x=geese2.endX}):ease("quadinout"):delay(0.5):oncomplete(closure)
+      else
+         local distance = (geese2.x - geese2.startX)
+
+         flux.to(geese2, 0.4, {scaleX = geese2.scale}):ease("quadinout")
+         flux.to(geese2, distance/122, {x=geese2.startX}):ease("quadinout"):delay(0.5):oncomplete(closure)
+      end
+   end
+end
+
+
+function wobble(geese2)
+   local function closure() wobble(geese2) end
+
+   if (geese2.y == geese2.startY) then
+      flux.to( geese2, 1, {y=geese2.startY+10}):ease("quadinout"):oncomplete(closure)
+      flux.to( geese2.waterlevel, 1, {y=160}):ease("quadinout")
+   else
+      flux.to( geese2, 1, {y=geese2.startY}):ease("quadinout"):oncomplete(closure)
+      flux.to( geese2.waterlevel, 1, {y=170}):ease("quadinout")
+   end
+end
 
 function init_world_transform(item)
    item.world_transform = {};
@@ -302,9 +298,10 @@ function recursive_draw(root)
    if root.img then
       if root.multiply then
          love.graphics.setBlendMode("multiply")
+      elseif root.premultiply then
+         love.graphics.setBlendMode("alpha", "premultiplied")
       else
          love.graphics.setBlendMode("alpha")
-
       end
       love.graphics.draw(root.img, x, y, radian, scaleX, scaleY, root.pivot.x, root.pivot.y)
    end
@@ -341,30 +338,94 @@ function addChild(parent, child)
 end
 
 function love.update(dt)
+   lovebird.update()
+   for i, g in ipairs(multiple_geese) do
+      g.old_x = g.x
+   end
+
    flux.update(dt)
+   for i, g in ipairs(multiple_geese) do
+      g.dx = g.old_x - g.x
+   end
+
    if love.keyboard.isDown("escape") then love.event.quit() end
    if love.keyboard.isDown("p") then
       local screenshot = love.graphics.newScreenshot();
       screenshot:encode('png', os.time() .. '.png');
-      --data = Canvas:newImageData( 0, 0, 1024*2, 768*2 )
    end
 
 end
 
 function love.mousepressed(x, y, button)
    if button == 1 then
-      local transformation = TLfres.getTransform()
-      print(x/transformation.sx, y/transformation.sy)
+      local x1, y1 = push:toGame(x, y)
+      --local transformation = TLfres.getTransform()
+      for i, g in ipairs(multiple_geese) do
+         if pointInCircle(x1, y1, g.geese_canvas.body_circle) or pointInCircle(x1, y1, g.geese_canvas.head_circle)  then
+            if g.sound_instance then
+               g.sound_instance:stop()
+            end
+            g.sound_instance = geese_honk1:play()
+            g.sound_instance:setPitch(.95 + math.random() * .1)
+            quak(g)
+            print("qauk", g)
+         end
+      end
+
+      if (pointInCircle(x1, y1, {x=sun.local_transform.position.x, y=sun.local_transform.position.y, radius=110})) then
+         growShrinkSun()
+      end
    end
 end
 
-function love.draw()
-   TLfres.transform()
+function getGradientedGeeseCanvas(geese2)
+   canvas = love.graphics.newCanvas(300, 250)
+   love.graphics.setCanvas(canvas)
+   love.graphics.clear()
    love.graphics.setColor(0xff,0xff,0xff)
+   recursive_draw(geese2.geese_root)
+   love.graphics.setBlendMode("multiply")
+   love.graphics.draw(geese2.geese_gradient.img, 0,  geese2.waterlevel.y, 0, 1, 1, 0, 0)
+   love.graphics.setBlendMode("alpha")
+   love.graphics.setCanvas()
+   return canvas
+end
+
+
+
+function love.draw()
+   love.graphics.setColor(0xff,0xff,0xff)
+   for i, g in ipairs(multiple_geese) do
+      g.temp_canvas = getGradientedGeeseCanvas(g)
+   end
+
+
+   push:start()
+   for i, g in ipairs(multiple_geese) do
+      geese_canvas = getDisplayObject(g.temp_canvas, g.x, g.y, 150, 200)
+      geese_canvas.local_transform.scale.x = g.scaleX
+      geese_canvas.local_transform.scale.y = g.scaleY
+      geese_canvas.premultiply= true
+
+      geese_canvas.body_circle = {x=geese_canvas.local_transform.position.x,  y=geese_canvas.local_transform.position.y-50, radius=80*geese_canvas.world_transform.scale.x}
+      geese_canvas.head_circle = {x=geese_canvas.local_transform.position.x  + (g.scaleX * -50),  y=geese_canvas.local_transform.position.y-50-100, radius=40*geese_canvas.world_transform.scale.x}
+      --geese_canvas.sound_instance = nil;
+
+      addChild(backdrop, geese_canvas)
+      g.geese_canvas = geese_canvas
+   end
 
    recursive_draw(backdrop)
-   love.graphics.setBlendMode("alpha", "premultiplied")
-   love.graphics.draw(canvas, 400, 1000)
-   love.graphics.setBlendMode("alpha")
-   TLfres.letterbox(4,3, {255,0,255,255})
+   -- for i, g in ipairs(multiple_geese) do
+   --    love.graphics.setColor(0xff,0x00,0xff)
+   --    love.graphics.circle("fill", g.geese_canvas.body_circle.x, g.geese_canvas.body_circle.y, g.geese_canvas.body_circle.radius, 40);
+   --    love.graphics.setColor(0xff,0x00,0x00)
+   --    love.graphics.circle("fill", g.geese_canvas.head_circle.x, g.geese_canvas.head_circle.y, g.geese_canvas.head_circle.radius, 40);
+   -- end
+
+   for i, g in ipairs(multiple_geese) do
+      removeChild(backdrop, g.geese_canvas)
+   end
+
+   push:finish()
 end
