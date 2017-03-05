@@ -170,7 +170,7 @@ end
     #env {
       position: absolute;
       top: 40px; bottom: 0px; right: 0px;
-      width: 300px;
+      width: 600px;
     }
     #envheader {
       padding: 5px;
@@ -332,7 +332,7 @@ end
           for (var i = 0; i < p.length; i++) {
             acc += "." + p[i];
             html += " <a href='#' onclick=\"setEnvPath('" + acc + "')\">" +
-                    truncate(p[i], 10) + "</a>";
+                    truncate(p[i], 32) + "</a>";
           }
           updateDivContent("envheader", html);
 
@@ -347,7 +347,7 @@ end
           for (var i = 0; json.vars[i]; i++) {
             var x = json.vars[i];
             var fullpath = (json.path + "." + x.key).replace(/^\./, "");
-            var k = truncate(x.key, 15);
+            var k = truncate(x.key, 32);
             if (x.type == "table") {
               k = "<a href='#' onclick=\"setEnvPath('" + fullpath + "')\">" +
                   k + "</a>";
