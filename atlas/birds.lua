@@ -1,0 +1,22 @@
+atlas_birds = {}
+atlas_birds['geese_beak_bottom'] = {x=470, y=314, w=25, h=9, q=nil}
+atlas_birds['geese_beak_top'] = {x=381, y=314, w=27, h=12, q=nil}
+atlas_birds['geese_eye'] = {x=26, y=308, w=14, h=14, q=nil}
+atlas_birds['geese_eye_close'] = {x=498, y=16, w=10, h=10, q=nil}
+atlas_birds['geese_foot'] = {x=303, y=314, w=42, h=39, q=nil}
+atlas_birds['geese_torso2'] = {x=46, y=206, w=166, h=175, q=nil}
+atlas_birds['gradient'] = {x=46, y=2, w=400, h=200, q=nil}
+atlas_birds['gradients_sky'] = {x=2, y=2, w=40, h=240, q=nil}
+atlas_birds['mallard_chick_beak_bottom'] = {x=412, y=329, w=21, h=6, q=nil}
+atlas_birds['mallard_chick_beak_top'] = {x=440, y=327, w=21, h=9, q=nil}
+atlas_birds['mallard_chick_foot'] = {x=2, y=308, w=20, h=19, q=nil}
+atlas_birds['mallard_chick_torso'] = {x=216, y=314, w=83, h=82, q=nil}
+atlas_birds['mallard_eye'] = {x=498, y=2, w=10, h=10, q=nil}
+atlas_birds['mallard_female_beak_bottom'] = {x=412, y=314, w=24, h=11, q=nil}
+atlas_birds['mallard_female_beak_top'] = {x=440, y=314, w=26, h=9, q=nil}
+atlas_birds['mallard_female_foot'] = {x=2, y=277, w=29, h=27, q=nil}
+atlas_birds['mallard_female_torso'] = {x=357, y=206, w=137, h=104, q=nil}
+atlas_birds['mallard_male_beak_bottom'] = {x=465, y=327, w=28, h=8, q=nil}
+atlas_birds['mallard_male_beak_top'] = {x=349, y=314, w=28, h=15, q=nil}
+atlas_birds['mallard_male_foot'] = {x=2, y=246, w=29, h=27, q=nil}
+atlas_birds['mallard_male_torso'] = {x=216, y=206, w=137, h=104, q=nil}

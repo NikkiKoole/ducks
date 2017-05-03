@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>iOS AppIcon29x29</string>
+				<string>iOS AppIcon40x40</string>
+				<string>iOS AppIcon57x57</string>
+				<string>iOS AppIcon60x60</string>
+			</array>
+		</dict>
+	</dict>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>iOS AppIcon29x29</string>
+				<string>iOS AppIcon40x40</string>
+				<string>iOS AppIcon57x57</string>
+				<string>iOS AppIcon60x60</string>
+				<string>iOS AppIcon50x50</string>
+				<string>iOS AppIcon72x72</string>
+				<string>iOS AppIcon76x76</string>
+				<string>iOS AppIcon83.5x83.5</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

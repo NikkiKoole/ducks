@@ -1,6 +1,7 @@
-function getDisplayObject(img, x, y, pivotX, pivotY)
+function getDisplayObject(img, quad, x, y, pivotX, pivotY)
    return {
       img = img,
+      quad = quad,
       pivot = {x=pivotX, y=pivotY},
       local_transform = {
          position = {x=x, y=y},
@@ -94,10 +95,12 @@ function recursiveDraw(root)
          love.graphics.setBlendMode("alpha")
       end
 
+      if (root.quad) then
+         love.graphics.draw(root.img, root.quad, x, y, radian, scaleX, scaleY, root.pivot.x, root.pivot.y)
 
-      love.graphics.draw(root.img, x, y, radian, scaleX, scaleY, root.pivot.x, root.pivot.y)
-
-
+      else
+         love.graphics.draw(root.img, x, y, radian, scaleX, scaleY, root.pivot.x, root.pivot.y)
+         end
    end
 
    if (root.color) then

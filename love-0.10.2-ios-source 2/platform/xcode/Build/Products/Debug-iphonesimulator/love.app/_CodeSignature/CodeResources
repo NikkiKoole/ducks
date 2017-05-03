@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>files</key>
+	<dict>
+		<key>Info.plist</key>
+		<data>
+		56w8Q3JOfK8N2d1Fny6wmoA4Fxs=
+		</data>
+		<key>Launch Screen.nib</key>
+		<data>
+		sNVCXe+7/6/TMPaHC8Bs0c/JQFI=
+		</data>
+		<key>PkgInfo</key>
+		<data>
+		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
+		<key>duck.love</key>
+		<data>
+		UlcTIgE2B/crA9dmNY9ebl9Hq3I=
+		</data>
+		<key>iOS AppIcon29x29.png</key>
+		<data>
+		wgIrCi0kzUYqeJVHN6oiZd6zoSA=
+		</data>
+		<key>iOS AppIcon29x29@2x.png</key>
+		<data>
+		USKv5hTuav6QTmun60xIGhpfz1I=
+		</data>
+		<key>iOS AppIcon29x29@2x~ipad.png</key>
+		<data>
+		USKv5hTuav6QTmun60xIGhpfz1I=
+		</data>
+		<key>iOS AppIcon29x29@3x.png</key>
+		<data>
+		XH/rrCDr+Klb0mnD6EThjsSFfac=
+		</data>
+		<key>iOS AppIcon29x29~ipad.png</key>
+		<data>
+		wgIrCi0kzUYqeJVHN6oiZd6zoSA=
+		</data>
+		<key>iOS AppIcon40x40@2x.png</key>
+		<data>
+		BAYsggK43mxDOrfunPg4Ly88N50=
+		</data>
+		<key>iOS AppIcon40x40@2x~ipad.png</key>
+		<data>
+		BAYsggK43mxDOrfunPg4Ly88N50=
+		</data>
+		<key>iOS AppIcon40x40@3x.png</key>
+		<data>
+		hbG/3OXENWi5/9l8OD/1uiT/A8w=
+		</data>
+		<key>iOS AppIcon40x40~ipad.png</key>
+		<data>
+		XGWR0WAMXMYdnAkpPJrq128JMtM=
+		</data>
+		<key>iOS AppIcon50x50@2x~ipad.png</key>
+		<data>
+		lTnl8Psr1f2fLxnu4yxTN8b7G+Y=
+		</data>
+		<key>iOS AppIcon50x50~ipad.png</key>
+		<data>
+		9g9dwTwAMGrJjqfSVIZHo/f+OS0=
+		</data>
+		<key>iOS AppIcon57x57.png</key>
+		<data>
+		48+FhYqeGcT5nWpo2Np2EA2T2HU=
+		</data>
+		<key>iOS AppIcon57x57@2x.png</key>
+		<data>
+		fMTD8c6BuVv6fPnc1nkcSpBN2yo=
+		</data>
+		<key>iOS AppIcon60x60@2x.png</key>
+		<data>
+		hbG/3OXENWi5/9l8OD/1uiT/A8w=
+		</data>
+		<key>iOS AppIcon60x60@3x.png</key>
+		<data>
+		Oxdv3mov2GDnXqO3lZ58fT9dBFM=
+		</data>
+		<key>iOS AppIcon72x72@2x~ipad.png</key>
+		<data>
+		UPY5Hm104X+8WPqF9g0FmIvsSo4=
+		</data>
+		<key>iOS AppIcon72x72~ipad.png</key>
+		<data>
+		B/7oialf8u1ocpckvJcwLe5f6cM=
+		</data>
+		<key>iOS AppIcon76x76@2x~ipad.png</key>
+		<data>
+		DJj8jPauy5/ZViemS/HzQIk4qAk=
+		</data>
+		<key>iOS AppIcon76x76~ipad.png</key>
+		<data>
+		cTptkKz3YSnAtt2TXG+PYM+CEFQ=
+		</data>
+		<key>iOS AppIcon83.5x83.5@2x~ipad.png</key>
+		<data>
+		/fh4nFNaSFdZhOAETo9xFYaMup0=
+		</data>
+	</dict>
+	<key>files2</key>
+	<dict>
+		<key>Launch Screen.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sNVCXe+7/6/TMPaHC8Bs0c/JQFI=
+			</data>
+			<key>hash2</key>
+			<data>
+			WpAaz0yAQNGlRjnUhZLj744XpYt/4J3aF9EVgoN1q8Q=
+			</data>
+		</dict>
+		<key>duck.love</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			UlcTIgE2B/crA9dmNY9ebl9Hq3I=
+			</data>
+			<key>hash2</key>
+			<data>
+			+bvN9y5cq/x/+EKWgpKzjoMPp10PgA9PLeYNzC0nEbE=
+			</data>
+		</dict>
+		<key>iOS AppIcon29x29.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wgIrCi0kzUYqeJVHN6oiZd6zoSA=
+			</data>
+			<key>hash2</key>
+			<data>
+			vtBw/Vt/9+UzBMmkQqYkFfcjHgoyWuso3QMwud1DChY=
+			</data>
+		</dict>
+		<key>iOS AppIcon29x29@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			USKv5hTuav6QTmun60xIGhpfz1I=
+			</data>
+			<key>hash2</key>
+			<data>
+			USnMqqwSEpfi6Ti3YdPgEOWHVVZ8KKShvlH94o3lXew=
+			</data>
+		</dict>
+		<key>iOS AppIcon29x29@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			USKv5hTuav6QTmun60xIGhpfz1I=
+			</data>
+			<key>hash2</key>
+			<data>
+			USnMqqwSEpfi6Ti3YdPgEOWHVVZ8KKShvlH94o3lXew=
+			</data>
+		</dict>
+		<key>iOS AppIcon29x29@3x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			XH/rrCDr+Klb0mnD6EThjsSFfac=
+			</data>
+			<key>hash2</key>
+			<data>
+			brODgpgk36Sp7l77PX9VfDRg/W3X3W8B0m52WF9JVI0=
+			</data>
+		</dict>
+		<key>iOS AppIcon29x29~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wgIrCi0kzUYqeJVHN6oiZd6zoSA=
+			</data>
+			<key>hash2</key>
+			<data>
+			vtBw/Vt/9+UzBMmkQqYkFfcjHgoyWuso3QMwud1DChY=
+			</data>
+		</dict>
+		<key>iOS AppIcon40x40@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BAYsggK43mxDOrfunPg4Ly88N50=
+			</data>
+			<key>hash2</key>
+			<data>
+			LMqfgXUVOzznTJ0JkBHL6bUUc/pqgJo8UUuCBdCJMfs=
+			</data>
+		</dict>
+		<key>iOS AppIcon40x40@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BAYsggK43mxDOrfunPg4Ly88N50=
+			</data>
+			<key>hash2</key>
+			<data>
+			LMqfgXUVOzznTJ0JkBHL6bUUc/pqgJo8UUuCBdCJMfs=
+			</data>
+		</dict>
+		<key>iOS AppIcon40x40@3x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hbG/3OXENWi5/9l8OD/1uiT/A8w=
+			</data>
+			<key>hash2</key>
+			<data>
+			qHzbLHkWnO8R23joTw19dHU/ktst8mTYWsRY2xlSKpE=
+			</data>
+		</dict>
+		<key>iOS AppIcon40x40~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			XGWR0WAMXMYdnAkpPJrq128JMtM=
+			</data>
+			<key>hash2</key>
+			<data>
+			rnzQPN+SDQZCE4eMeEjHxOdsvsAE/sYqIH9h6r8Zm8Q=
+			</data>
+		</dict>
+		<key>iOS AppIcon50x50@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			lTnl8Psr1f2fLxnu4yxTN8b7G+Y=
+			</data>
+			<key>hash2</key>
+			<data>
+			L4I8z09xPCC5mqVsngXE4ylwZvYi3hTiRMMaklWAbg8=
+			</data>
+		</dict>
+		<key>iOS AppIcon50x50~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			9g9dwTwAMGrJjqfSVIZHo/f+OS0=
+			</data>
+			<key>hash2</key>
+			<data>
+			JnNpVbVqY+BrejqbxIidUbqtsY599KsU8wxAaW7q4rE=
+			</data>
+		</dict>
+		<key>iOS AppIcon57x57.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			48+FhYqeGcT5nWpo2Np2EA2T2HU=
+			</data>
+			<key>hash2</key>
+			<data>
+			zE02LSJONt7Uqk67Y+5QzZyMeFrOcgdBHsbpBYnRXNs=
+			</data>
+		</dict>
+		<key>iOS AppIcon57x57@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fMTD8c6BuVv6fPnc1nkcSpBN2yo=
+			</data>
+			<key>hash2</key>
+			<data>
+			p3Ymw7AH8XCls4SFZk4BY+9sPFwVw0kcrWf/1QChzWM=
+			</data>
+		</dict>
+		<key>iOS AppIcon60x60@2x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hbG/3OXENWi5/9l8OD/1uiT/A8w=
+			</data>
+			<key>hash2</key>
+			<data>
+			qHzbLHkWnO8R23joTw19dHU/ktst8mTYWsRY2xlSKpE=
+			</data>
+		</dict>
+		<key>iOS AppIcon60x60@3x.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Oxdv3mov2GDnXqO3lZ58fT9dBFM=
+			</data>
+			<key>hash2</key>
+			<data>
+			2G9UVVzpfid+ZbTmF8Zw96e5yDNiHQpM+uPC8dgqrNY=
+			</data>
+		</dict>
+		<key>iOS AppIcon72x72@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			UPY5Hm104X+8WPqF9g0FmIvsSo4=
+			</data>
+			<key>hash2</key>
+			<data>
+			tVX/8v7hAeA4ckOT4e+QC/CQRe1dIuy7KZ8Ujdci5pg=
+			</data>
+		</dict>
+		<key>iOS AppIcon72x72~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			B/7oialf8u1ocpckvJcwLe5f6cM=
+			</data>
+			<key>hash2</key>
+			<data>
+			2jQkhn+FvHMq6ZJO37Nd8gaPuNxPqGD0NODtNXGKOgk=
+			</data>
+		</dict>
+		<key>iOS AppIcon76x76@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			DJj8jPauy5/ZViemS/HzQIk4qAk=
+			</data>
+			<key>hash2</key>
+			<data>
+			KJAxC4M3Meknuww7Qe8Rjco4QIecCHU39WUCUGfGPg4=
+			</data>
+		</dict>
+		<key>iOS AppIcon76x76~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			cTptkKz3YSnAtt2TXG+PYM+CEFQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			SCOvn3oOPLhiBPT9uNfj2DF+k/gbDtR7jBHOkf2Sm0Y=
+			</data>
+		</dict>
+		<key>iOS AppIcon83.5x83.5@2x~ipad.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			/fh4nFNaSFdZhOAETo9xFYaMup0=
+			</data>
+			<key>hash2</key>
+			<data>
+			1UkMWckaey9D+srV4L233iPfgh6udMYAIqoKPR4GTgI=
+			</data>
+		</dict>
+	</dict>
+	<key>rules</key>
+	<dict>
+		<key>^</key>
+		<true/>
+		<key>^.*\.lproj/</key>
+		<dict>
+			<key>optional</key>
+			<true/>
+			<key>weight</key>
+			<real>1000</real>
+		</dict>
+		<key>^.*\.lproj/locversion.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
+		<key>^version.plist$</key>
+		<true/>
+	</dict>
+	<key>rules2</key>
+	<dict>
+		<key>.*\.dSYM($|/)</key>
+		<dict>
+			<key>weight</key>
+			<real>11</real>
+		</dict>
+		<key>^</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^(.*/)?\.DS_Store$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>2000</real>
+		</dict>
+		<key>^(Frameworks|SharedFrameworks|PlugIns|Plug-ins|XPCServices|Helpers|MacOS|Library/(Automator|Spotlight|LoginItems))/</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
+		</dict>
+		<key>^.*</key>
+		<true/>
+		<key>^.*\.lproj/</key>
+		<dict>
+			<key>optional</key>
+			<true/>
+			<key>weight</key>
+			<real>1000</real>
+		</dict>
+		<key>^.*\.lproj/locversion.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>1100</real>
+		</dict>
+		<key>^Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
+		</dict>
+		<key>^Info\.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^PkgInfo$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^[^/]+$</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
+		</dict>
+		<key>^embedded\.provisionprofile$</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^version\.plist$</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

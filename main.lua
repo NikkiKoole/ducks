@@ -5,12 +5,16 @@ require 'scene_graph'
 require 'util'
 require 'vendor/slam'
 require 'gradient'
+require 'autobatch'
 
 local lovebird = require 'vendor/lovebird'
-lovebird.port = 3333 -- http://localhost:3333
+
+
+
 
 function makeGoose(x, y, startX, endX, startY, scale, waterLevel)
    local goose = {}
+   goose.type = 'goose'
    goose.waterlevel = {y=waterLevel}
    goose.startWaterlevel = {y=waterLevel}
    goose.dx = 0
@@ -27,22 +31,22 @@ function makeGoose(x, y, startX, endX, startY, scale, waterLevel)
    goose.endX = endX
    goose.startY = startY
 
-   goose.root = getDisplayObject(nil, 250, 200,0.5 * geese_torso_img:getWidth(), 1.0 * geese_torso_img:getHeight())
-   goose.back_foot = getDisplayObject(geese_foot_img, 0, -25, 1.0 * geese_foot_img:getWidth(), 0 * geese_foot_img:getHeight())
+   goose.root = getDisplayObject(nil, nil, 250, 200,0.5 * atlas_birds['geese_torso2'].w, 1.0 * atlas_birds['geese_torso2'].h)
+   goose.back_foot = getDisplayObject(birds_atlas_img, atlas_birds['geese_foot'].q,  0, -25, 1.0 * atlas_birds['geese_foot'].w, 0 * atlas_birds['geese_foot'].h)
    goose.back_foot.local_transform.radian = math.rad(-40)
-   goose.front_foot = getDisplayObject(geese_foot_img, 15, -10, 1.0 * geese_foot_img:getWidth(), 0 * geese_foot_img:getHeight())
+   goose.front_foot = getDisplayObject(birds_atlas_img, atlas_birds['geese_foot'].q,  15, -10, 1.0 * atlas_birds['geese_foot'].w, 0 * atlas_birds['geese_foot'].h)
    goose.front_foot.local_transform.radian = math.rad(-40)
-   goose.torso = getDisplayObject(geese_torso_img, 0, 0, 0.5 * geese_torso_img:getWidth(), 1.0 * geese_torso_img:getHeight())
-   goose.eye = getDisplayObject(geese_eye_img, -65, -160, 0.5 * geese_eye_img:getWidth(), 0.5 * geese_eye_img:getHeight())
-   goose.eye_close = getDisplayObject(geese_eye_close_img, -65, -165, 0.5 * geese_eye_close_img:getWidth(), 0 * geese_eye_close_img:getHeight())
+   goose.torso = getDisplayObject(birds_atlas_img, atlas_birds['geese_torso2'].q,  0, 0, 0.5 * atlas_birds['geese_torso2'].w, 1.0 * atlas_birds['geese_torso2'].h)
+   goose.eye = getDisplayObject(birds_atlas_img, atlas_birds['geese_eye'].q,  -65, -160, 0.5 * atlas_birds['geese_eye'].w, 0.5 * atlas_birds['geese_eye'].h)
+   goose.eye_close = getDisplayObject(birds_atlas_img, atlas_birds['geese_eye_close'].q, -65, -165, 0.5 * atlas_birds['geese_eye_close'].w, 0 * atlas_birds['geese_eye_close'].h)
 
    goose.eye_close.local_transform.scale.y = 0
 
-   goose.beak_top = getDisplayObject(geese_beak_top_img, -78, -160, 1.0 * geese_beak_top_img:getWidth(), 1.0 * geese_beak_top_img:getHeight() )
+   goose.beak_top = getDisplayObject(birds_atlas_img, atlas_birds['geese_beak_top'].q, -78, -160, 1.0 * atlas_birds['geese_beak_top'].w, 1.0 * atlas_birds['geese_beak_top'].h )
    goose.beak_top.local_transform.radian = math.rad(-20);
-   goose.beak_bottom = getDisplayObject(geese_beak_bottom_img, -78, -160, 1.0 * geese_beak_bottom_img:getWidth(), 0 * geese_beak_bottom_img:getHeight() )
+   goose.beak_bottom = getDisplayObject(birds_atlas_img, atlas_birds['geese_beak_bottom'].q, -78, -160, 1.0 * atlas_birds['geese_beak_bottom'].w, 0 * atlas_birds['geese_beak_bottom'].h )
    goose.beak_bottom.local_transform.radian = math.rad(10);
-   goose.gradient = getDisplayObject(geese_gradient_img, 0, 50, 0.5 * geese_gradient_img:getWidth(), 1.0 * geese_gradient_img:getHeight())
+   goose.gradient = getDisplayObject(birds_atlas_img, atlas_birds['gradient'].q,  0, 50, 0.5 *  atlas_birds['gradient'].w, 1.0 *  atlas_birds['gradient'].h)
    goose.gradient.multiply = true
 
    goose.tweens = {back_foot=nil, front_foot=nil, posx=nil, posy=nil, scale=nil, waterlevel=nil, eye_lid1=nil, eye_lid2=nil}
@@ -62,6 +66,8 @@ end
 
 function makeMallardChick(x, y, startX, endX, startY, scale, waterLevel)
    local mallard_chick = {}
+   mallard_chick.type = 'chick'
+
    mallard_chick.waterlevel = {y=waterLevel}
    mallard_chick.startWaterlevel = {y=waterLevel}
 
@@ -79,23 +85,23 @@ function makeMallardChick(x, y, startX, endX, startY, scale, waterLevel)
    mallard_chick.endX = endX
    mallard_chick.startY = startY
 
-   mallard_chick.root = getDisplayObject(nil, 250,200,0.5 * mallard_chick_torso_img:getWidth(), 1.0 * mallard_chick_torso_img:getHeight())
-   mallard_chick.torso = getDisplayObject(mallard_chick_torso_img, 0, 0, 0.5 * mallard_chick_torso_img:getWidth(), 1.0 * mallard_chick_torso_img:getHeight())
+   mallard_chick.root = getDisplayObject(nil, nil, 250,200,0.5 * atlas_birds['mallard_chick_torso'].w, 1.0 * atlas_birds['mallard_chick_torso'].h)
+   mallard_chick.torso = getDisplayObject(birds_atlas_img, atlas_birds['mallard_chick_torso'].q,  0, 0, 0.5 * atlas_birds['mallard_chick_torso'].w, 1.0 * atlas_birds['mallard_chick_torso'].h)
 
-   mallard_chick.back_foot = getDisplayObject(mallard_chick_foot_img, 0, -20, 1.0 * mallard_chick_foot_img:getWidth(), 0 * mallard_chick_foot_img:getHeight())
+   mallard_chick.back_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_chick_foot'].q, 0, -20, 1.0 * atlas_birds['mallard_chick_foot'].w, 0 * atlas_birds['mallard_chick_foot'].h)
    mallard_chick.back_foot.local_transform.radian = math.rad(0);
-   mallard_chick.front_foot = getDisplayObject(mallard_chick_foot_img, 15, -10, 1.0 *mallard_chick_foot_img:getWidth(), 0 * mallard_chick_foot_img:getHeight())
+   mallard_chick.front_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_chick_foot'].q, 15, -10, 1.0 *atlas_birds['mallard_chick_foot'].w, 0 * atlas_birds['mallard_chick_foot'].h)
    mallard_chick.front_foot.local_transform.radian = math.rad(0);
 
-   mallard_chick.beak_top = getDisplayObject(mallard_chick_beak_top_img, -32, -70, 1.0 * mallard_chick_beak_top_img:getWidth(), 1.0 * mallard_chick_beak_top_img:getHeight() )
-   mallard_chick.beak_top.local_transform.radian = math.rad(0);
-   mallard_chick.beak_bottom = getDisplayObject(mallard_chick_beak_bottom_img, -32, -70, 1.0 * mallard_chick_beak_bottom_img:getWidth(), 0 * mallard_chick_beak_bottom_img:getHeight() )
-   mallard_chick.beak_bottom.local_transform.radian = math.rad(0);
-   mallard_chick.eye = getDisplayObject(mallard_eye_img, -20, -67, 0.5 * mallard_eye_img:getWidth(), 1.0 * mallard_eye_img:getHeight())
+   mallard_chick.beak_top = getDisplayObject(birds_atlas_img, atlas_birds['mallard_chick_beak_top'].q, -32, -70, 1.0 *  atlas_birds['mallard_chick_beak_top'].w, 1.0 *  atlas_birds['mallard_chick_beak_top'].h )
+   mallard_chick.beak_top.local_transform.radian = math.rad(-20);
+   mallard_chick.beak_bottom = getDisplayObject(birds_atlas_img, atlas_birds['mallard_chick_beak_bottom'].q, -32, -70, 1.0 * atlas_birds['mallard_chick_beak_bottom'].w, 0 * atlas_birds['mallard_chick_beak_bottom'].h )
+   mallard_chick.beak_bottom.local_transform.radian = math.rad(10);
+   mallard_chick.eye = getDisplayObject(birds_atlas_img,  atlas_birds['mallard_eye'].q, -20, -67, 0.5 * atlas_birds['mallard_eye'].w, 1.0 * atlas_birds['mallard_eye'].h)
 
-   mallard_chick.gradient = getDisplayObject(geese_gradient_img, 0, 50, 0.5 * geese_gradient_img:getWidth(), 1.0 * geese_gradient_img:getHeight())
+   mallard_chick.gradient = getDisplayObject(birds_atlas_img, atlas_birds['gradient'].q, 0, 50, 0.5 * atlas_birds['gradient'].w, 1.0 * atlas_birds['gradient'].h)
    mallard_chick.gradient.multiply = true
-   mallard_chick.eye_close = getDisplayObject(geese_eye_close_img, -20, -77, 0.5 * geese_eye_close_img:getWidth(), 0 * geese_eye_close_img:getHeight())
+   mallard_chick.eye_close = getDisplayObject(birds_atlas_img, atlas_birds['geese_eye_close'].q, -20, -77, 0.5 * atlas_birds['geese_eye_close'].w, 0 * atlas_birds['geese_eye_close'].h)
    mallard_chick.eye_close.local_transform.scale.y = 0
 
    mallard_chick.tweens = {back_foot=nil, front_foot=nil, posx=nil, posy=nil, scale=nil, waterlevel=nil, eye_lid1=nil, eye_lid2=nil}
@@ -113,6 +119,8 @@ end
 
 function makeMallardMale(x, y, startX, endX, startY, scale, waterLevel)
    local mallard_male = {}
+   mallard_male.type = 'mallard'
+
    mallard_male.waterlevel = {y=waterLevel}
    mallard_male.startWaterlevel = {y=waterLevel}
 
@@ -129,24 +137,23 @@ function makeMallardMale(x, y, startX, endX, startY, scale, waterLevel)
    mallard_male.startX = startX
    mallard_male.endX = endX
    mallard_male.startY = startY
+   mallard_male.root = getDisplayObject(nil,nil, 250,200,0.5 * atlas_birds['mallard_male_torso'].w, 1.0 * atlas_birds['mallard_male_torso'].h)
+   mallard_male.torso = getDisplayObject(birds_atlas_img, atlas_birds['mallard_male_torso'].q, 0, 0, 0.5 * atlas_birds['mallard_male_torso'].w, 1.0 *atlas_birds['mallard_male_torso'].h)
 
-   mallard_male.root = getDisplayObject(nil, 250,200,0.5 * mallard_male_torso_img:getWidth(), 1.0 * mallard_male_torso_img:getHeight())
-   mallard_male.torso = getDisplayObject(mallard_male_torso_img, 0, 0, 0.5 * mallard_male_torso_img:getWidth(), 1.0 * mallard_male_torso_img:getHeight())
-
-   mallard_male.back_foot = getDisplayObject(mallard_male_foot_img, 0, -20, 1.0 * mallard_male_foot_img:getWidth(), 0 * mallard_male_foot_img:getHeight())
+   mallard_male.back_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_male_foot'].q, 0, -20, 1.0 *atlas_birds['mallard_male_foot'].w, 0 * atlas_birds['mallard_male_foot'].h)
    mallard_male.back_foot.local_transform.radian = math.rad(0);
-   mallard_male.front_foot = getDisplayObject(mallard_male_foot_img, 15, -10, 1.0 *mallard_male_foot_img:getWidth(), 0 * mallard_male_foot_img:getHeight())
+   mallard_male.front_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_male_foot'].q, 15, -10, 1.0 *atlas_birds['mallard_male_foot'].w, 0 * atlas_birds['mallard_male_foot'].h)
    mallard_male.front_foot.local_transform.radian = math.rad(0);
 
-   mallard_male.beak_top = getDisplayObject(mallard_male_beak_top_img, -50, -90, 1.0 * mallard_male_beak_top_img:getWidth(), 1.0 * mallard_male_beak_top_img:getHeight() )
-   mallard_male.beak_top.local_transform.radian = math.rad(0);
-   mallard_male.beak_bottom = getDisplayObject(mallard_male_beak_bottom_img, -50, -90, 1.0 * mallard_male_beak_bottom_img:getWidth(), 0 * mallard_male_beak_bottom_img:getHeight() )
-   mallard_male.beak_bottom.local_transform.radian = math.rad(0);
-   mallard_male.eye = getDisplayObject(mallard_eye_img, -40, -87, 0.5 * mallard_eye_img:getWidth(), 1.0 * mallard_eye_img:getHeight())
+   mallard_male.beak_top = getDisplayObject(birds_atlas_img, atlas_birds['mallard_male_beak_top'].q, -50, -90, 1.0 * atlas_birds['mallard_male_beak_top'].w, 1.0 * atlas_birds['mallard_male_beak_top'].h )
+   mallard_male.beak_top.local_transform.radian = math.rad(-20);
+   mallard_male.beak_bottom = getDisplayObject(birds_atlas_img, atlas_birds['mallard_male_beak_bottom'].q, -50, -90, 1.0 * atlas_birds['mallard_male_beak_bottom'].w, 0 * atlas_birds['mallard_male_beak_bottom'].h )
+   mallard_male.beak_bottom.local_transform.radian = math.rad(10);
+   mallard_male.eye = getDisplayObject(birds_atlas_img, atlas_birds['mallard_eye'].q, -40, -87, 0.5 * atlas_birds['mallard_eye'].w, 1.0 * atlas_birds['mallard_eye'].h)
 
-   mallard_male.gradient = getDisplayObject(geese_gradient_img, 0, 50, 0.5 * geese_gradient_img:getWidth(), 1.0 * geese_gradient_img:getHeight())
+   mallard_male.gradient = getDisplayObject(birds_atlas_img, atlas_birds['gradient'].q, 0, 50, 0.5 * atlas_birds['gradient'].w, 1.0 * atlas_birds['gradient'].h)
    mallard_male.gradient.multiply = true
-   mallard_male.eye_close = getDisplayObject(geese_eye_close_img, -40, -97, 0.5 * geese_eye_close_img:getWidth(), 0 * geese_eye_close_img:getHeight())
+   mallard_male.eye_close = getDisplayObject(birds_atlas_img, atlas_birds['geese_eye_close'].q, -40, -97, 0.5 * atlas_birds['geese_eye_close'].w, 0 * atlas_birds['geese_eye_close'].h)
    mallard_male.eye_close.local_transform.scale.y = 0
 
    mallard_male.tweens = {back_foot=nil, front_foot=nil, posx=nil, posy=nil, scale=nil, waterlevel=nil, eye_lid1=nil, eye_lid2=nil}
@@ -163,6 +170,8 @@ end
 
 function makeMallardFemale(x, y, startX, endX, startY, scale, waterLevel)
    local mallard_female = {}
+   mallard_female.type = 'mallard'
+
    mallard_female.waterlevel = {y=waterLevel}
    mallard_female.startWaterlevel = {y=waterLevel}
 
@@ -180,23 +189,23 @@ function makeMallardFemale(x, y, startX, endX, startY, scale, waterLevel)
    mallard_female.endX = endX
    mallard_female.startY = startY
 
-   mallard_female.root = getDisplayObject(nil, 250,200,0.5 * mallard_female_torso_img:getWidth(), 1.0 * mallard_female_torso_img:getHeight())
-   mallard_female.torso = getDisplayObject(mallard_female_torso_img, 0, 0, 0.5 * mallard_female_torso_img:getWidth(), 1.0 * mallard_female_torso_img:getHeight())
+   mallard_female.root = getDisplayObject(nil,nil, 250,200,0.5 * atlas_birds['mallard_female_torso'].w, 1.0 * atlas_birds['mallard_female_torso'].h)
+   mallard_female.torso = getDisplayObject(birds_atlas_img, atlas_birds['mallard_female_torso'].q, 0, 0, 0.5 * atlas_birds['mallard_female_torso'].w, 1.0 * atlas_birds['mallard_female_torso'].h)
 
-   mallard_female.back_foot = getDisplayObject(mallard_female_foot_img, 0, -20, 1.0 * mallard_female_foot_img:getWidth(), 0 * mallard_female_foot_img:getHeight())
+   mallard_female.back_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_female_foot'].q, 0, -20, 1.0 * atlas_birds['mallard_female_foot'].w, 0 * atlas_birds['mallard_female_foot'].h)
    mallard_female.back_foot.local_transform.radian = math.rad(0);
-   mallard_female.front_foot = getDisplayObject(mallard_female_foot_img, 15, -10, 1.0 *mallard_female_foot_img:getWidth(), 0 * mallard_female_foot_img:getHeight())
+   mallard_female.front_foot = getDisplayObject(birds_atlas_img, atlas_birds['mallard_female_foot'].q, 15, -10, 1.0 *atlas_birds['mallard_female_foot'].w, 0 * atlas_birds['mallard_female_foot'].h)
    mallard_female.front_foot.local_transform.radian = math.rad(0);
 
-   mallard_female.beak_top = getDisplayObject(mallard_female_beak_top_img, -50, -90, 1.0 * mallard_female_beak_top_img:getWidth(), 1.0 * mallard_female_beak_top_img:getHeight() )
-   mallard_female.beak_top.local_transform.radian = math.rad(0);
-   mallard_female.beak_bottom = getDisplayObject(mallard_female_beak_bottom_img, -50, -90, 1.0 * mallard_female_beak_bottom_img:getWidth(), 0 * mallard_female_beak_bottom_img:getHeight() )
-   mallard_female.beak_bottom.local_transform.radian = math.rad(0);
-   mallard_female.eye = getDisplayObject(mallard_eye_img, -40, -87, 0.5 * mallard_eye_img:getWidth(), 1.0 * mallard_eye_img:getHeight())
+   mallard_female.beak_top = getDisplayObject(birds_atlas_img, atlas_birds['mallard_female_beak_top'].q, -50, -90, 1.0 * atlas_birds['mallard_female_beak_top'].w, 1.0 * atlas_birds['mallard_female_beak_top'].h )
+   mallard_female.beak_top.local_transform.radian = math.rad(-20);
+   mallard_female.beak_bottom = getDisplayObject(birds_atlas_img, atlas_birds['mallard_female_beak_bottom'].q, -50, -90, 1.0 * atlas_birds['mallard_female_beak_bottom'].w, 0 * atlas_birds['mallard_female_beak_bottom'].h )
+   mallard_female.beak_bottom.local_transform.radian = math.rad(10);
+   mallard_female.eye = getDisplayObject(birds_atlas_img, atlas_birds['mallard_eye'].q, -40, -87, 0.5 * atlas_birds['mallard_eye'].w, 1.0 * atlas_birds['mallard_eye'].h)
 
-   mallard_female.gradient = getDisplayObject(geese_gradient_img, 0, 50, 0.5 * geese_gradient_img:getWidth(), 1.0 * geese_gradient_img:getHeight())
+   mallard_female.gradient = getDisplayObject(birds_atlas_img, atlas_birds['gradient'].q, 0, 50, 0.5 *  atlas_birds['gradient'].w, 1.0 *  atlas_birds['gradient'].h)
    mallard_female.gradient.multiply = true
-   mallard_female.eye_close = getDisplayObject(geese_eye_close_img, -40, -97, 0.5 * geese_eye_close_img:getWidth(), 0 * geese_eye_close_img:getHeight())
+   mallard_female.eye_close = getDisplayObject(birds_atlas_img, atlas_birds['geese_eye_close'].q, -40, -97, 0.5 * atlas_birds['geese_eye_close'].w, 0 * atlas_birds['geese_eye_close'].h)
    mallard_female.eye_close.local_transform.scale.y = 0
 
    mallard_female.tweens = {back_foot=nil, front_foot=nil, posx=nil, posy=nil, scale=nil, waterlevel=nil, eye_lid1=nil, eye_lid2=nil}
@@ -212,15 +221,35 @@ function makeMallardFemale(x, y, startX, endX, startY, scale, waterLevel)
 end
 
 
-function compareY(a,b)
-  return a.y < b.y
-end
+
 function love.load()
+   lovebird.port = 3333 -- http://localhost:3333
+   love.math.setRandomSeed(6 )
+
+
+   terrain_atlas_img = love.graphics.newImage('atlas/terrain.png')
+   birds_atlas_img = love.graphics.newImage('atlas/birds.png')
+   entities_atlas_img = love.graphics.newImage('atlas/entities.png')
+   require('atlas.terrain')
+   require('atlas.birds')
+   require('atlas.entities')
+
+   for k, v in pairs(atlas_terrain) do
+      atlas_terrain[k].q = love.graphics.newQuad(v.x, v.y, v.w, v.h, terrain_atlas_img:getWidth(), terrain_atlas_img:getHeight())
+   end
+   for k, v in pairs(atlas_birds) do
+      atlas_birds[k].q = love.graphics.newQuad(v.x, v.y, v.w, v.h, birds_atlas_img:getWidth(), birds_atlas_img:getHeight())
+   end
+   for k, v in pairs(atlas_entities) do
+      atlas_entities[k].q = love.graphics.newQuad(v.x, v.y, v.w, v.h, entities_atlas_img:getWidth(), entities_atlas_img:getHeight())
+   end
+
+
    day_music = love.audio.newSource("sounds/clarinet_duck_jaunty.ogg", 'static')
-   --
 
    day_music:setLooping(true)
    day_music:setPitch(1.0)
+
    love.audio.play(day_music)
 
 
@@ -245,82 +274,76 @@ function love.load()
 
 
    geese_honk1 = love.audio.newSource('sounds/geese_honk_1.ogg', 'static')
+   duck_honk1 = love.audio.newSource('sounds/duck.ogg', 'static')
    boing = love.audio.newSource('sounds/boing.wav', 'static')
+   splash1 = love.audio.newSource('sounds/splash1.ogg', 'static')
+
+   backdrop = getDisplayObject(nil,nil, 0, 0)
+
+   grass = getDisplayObject(terrain_atlas_img,        atlas_terrain['backdrop'].q, 0, 770)
+   foreground = getDisplayObject(terrain_atlas_img,   atlas_terrain['foreground'].q , 0, 1320)
+   bushes_back = getDisplayObject(terrain_atlas_img,  atlas_terrain['bushes_back2'].q, 160, 950)
+   bushes_front = getDisplayObject(terrain_atlas_img, atlas_terrain['bushes_front'].q, 110, 940)
 
 
-   geese_torso_img = love.graphics.newImage("images/geese_torso2.png")
-   geese_eye_img = love.graphics.newImage("images/geese_eye.png")
-   geese_eye_close_img = love.graphics.newImage("images/geese_eye_close.png")
-   geese_foot_img = love.graphics.newImage("images/geese_foot.png")
-   geese_beak_top_img = love.graphics.newImage("images/geese_beak_top.png")
-   geese_beak_bottom_img = love.graphics.newImage("images/geese_beak_bottom.png")
-   geese_beak_bottom_img:setFilter('nearest','nearest')
-   geese_gradient_img = love.graphics.newImage("images/gradient.png")
+   tree1 = getDisplayObject(entities_atlas_img, atlas_entities['tree1'].q, 20, 100)
+   tree2 = getDisplayObject(entities_atlas_img, atlas_entities['tree2'].q, 1050, 100)
+   sun = getDisplayObject(entities_atlas_img, atlas_entities['sun'].q, 1700, 200, 0.5 * atlas_entities['sun'].w,  0.5 * atlas_entities['sun'].h)
+   moon = getDisplayObject(entities_atlas_img, atlas_entities['moon'].q, (1024*2) - 1700, (768*2) - 200, 0.5 * atlas_entities['moon'].w,  0.5 * atlas_entities['moon'].h)
+   cloud1 = getDisplayObject(entities_atlas_img, atlas_entities['cloud1'].q, 100, 200, 0.5 * atlas_entities['cloud1'].w,  0.5 * atlas_entities['cloud1'].h)
+   cloud2 = getDisplayObject(entities_atlas_img, atlas_entities['cloud2'].q, 1800, 300, 0.5 * atlas_entities['cloud2'].w,  0.5 * atlas_entities['cloud2'].h)
+   cloud3 = getDisplayObject(entities_atlas_img, atlas_entities['cloud3'].q, 1400, 400, 0.5 * atlas_entities['cloud3'].w,  0.5 * atlas_entities['cloud3'].h)
+
+   plane = getDisplayObject(entities_atlas_img, atlas_entities['plane'].q, 500, 400, 0.5 * atlas_entities['plane'].w,  0.5 * atlas_entities['plane'].h)
+   plane.local_transform.scale = {x= 0.3, y=0.3}
+   plane_light_white = getDisplayObject(entities_atlas_img, atlas_entities['light'].q, -40, -40, 0.5 * atlas_entities['light'].w,  0.5 * atlas_entities['light'].h)
+   plane_light_white.color = {255,255,255,255}
+   plane_light_red = getDisplayObject(entities_atlas_img, atlas_entities['light'].q, -30, 45, 0.5 * atlas_entities['light'].w,  0.5 * atlas_entities['light'].h)
+   plane_light_red.color = {255,0,0,255}
+
+   plane2 = getDisplayObject(entities_atlas_img, atlas_entities['plane'].q, 2500, 500, 0.5 * atlas_entities['plane'].w,  0.5 * atlas_entities['plane'].h)
+   plane2.local_transform.scale = {x= -0.2, y=0.2}
+   plane2_light_white = getDisplayObject(entities_atlas_img, atlas_entities['light'].q, -40, -40, 0.5 * atlas_entities['light'].w,  0.5 * atlas_entities['light'].h)
+   plane2_light_white.color = {255,255,255,255}
+   plane2_light_red = getDisplayObject(entities_atlas_img, atlas_entities['light'].q, -30, 45, 0.5 * atlas_entities['light'].w,  0.5 * atlas_entities['light'].h)
+   plane2_light_red.color = {255,0,0,255}
 
 
-   mallard_male_torso_img = love.graphics.newImage("images/mallard_male_torso.png")
-   mallard_male_foot_img = love.graphics.newImage("images/mallard_male_foot.png")
-   mallard_male_beak_top_img = love.graphics.newImage("images/mallard_male_beak_top.png")
-   mallard_male_beak_bottom_img = love.graphics.newImage("images/mallard_male_beak_bottom.png")
-
-   mallard_female_torso_img = love.graphics.newImage("images/mallard_female_torso.png")
-   mallard_female_foot_img = love.graphics.newImage("images/mallard_female_foot.png")
-   mallard_female_beak_top_img = love.graphics.newImage("images/mallard_female_beak_top.png")
-   mallard_female_beak_bottom_img = love.graphics.newImage("images/mallard_female_beak_bottom.png")
-
-   mallard_chick_torso_img = love.graphics.newImage("images/mallard_chick_torso.png")
-   mallard_chick_foot_img = love.graphics.newImage("images/mallard_chick_foot.png")
-   mallard_chick_beak_top_img = love.graphics.newImage("images/mallard_chick_beak_top.png")
-   mallard_chick_beak_bottom_img = love.graphics.newImage("images/mallard_chick_beak_bottom.png")
-
-
-   mallard_eye_img = love.graphics.newImage("images/mallard_eye.png")
-
-
-
-   grass_img = love.graphics.newImage("images/grass.png")
-   bushes_back_img = love.graphics.newImage("images/bushes_back2.png")
-   bushes_front_img = love.graphics.newImage("images/bushes_front.png")
-   sun_img = love.graphics.newImage("images/sun.png")
-   moon_img = love.graphics.newImage("images/moon.png")
-
-   tree_1_img = love.graphics.newImage("images/tree1.png")
-   tree_2_img = love.graphics.newImage("images/tree2.png")
-
-   pond_img = love.graphics.newImage("images/pond.png")
-
-   backdrop = getDisplayObject(nil, 0, 0)
-
-   grass = getDisplayObject(grass_img, 0, 770)
-   bushes_back = getDisplayObject(bushes_back_img, 160, 950)
-   bushes_front = getDisplayObject(bushes_front_img, 110, 940)
-   tree1 = getDisplayObject(tree_1_img, 20, 100)
-   tree2 = getDisplayObject(tree_2_img, 1050, 100)
-   pond = getDisplayObject(pond_img, 150, 1100)
-   sun = getDisplayObject(sun_img, 1700, 200, 0.5 * sun_img:getWidth(),  0.5 * sun_img:getHeight())
-   moon = getDisplayObject(moon_img, (1024*2) - 1700, (768*2) - 200, 0.5 * moon_img:getWidth(),  0.5 * moon_img:getHeight())
    moon.color = {255,255,255,255}
    sun.origin = {x=1700, y=200}
    sun.dragging = { allowed = true, active = false, diffX = 0, diffY = 0}
    sun.tweens = {pos=nil, scale=nil}
 
-
    addChild(backdrop, sun)
    addChild(backdrop, moon)
+   addChild(plane, plane_light_white)
+   addChild(plane, plane_light_red)
+   addChild(backdrop, plane)
+
+   addChild(plane2, plane2_light_white)
+   addChild(plane2, plane2_light_red)
+   addChild(backdrop, plane2)
+
+   addChild(backdrop, cloud1)
+   addChild(backdrop, cloud2)
+   addChild(backdrop, cloud3)
+
 
    addChild(backdrop, grass)
-   addChild(backdrop, pond)
+
    addChild(backdrop, bushes_back)
    addChild(backdrop, tree1)
    addChild(backdrop, tree2)
    addChild(backdrop, bushes_front)
+
+   addChild(backdrop, foreground)
 
    --local mallard = makeMallardMale(500,1200, 500,1600,1200, 1.1)
    --addChild(backdrop, mallard.root)
 
    multiple_geese = {}
 
-   for i=1, 30, 1
+   for i=1, 10, 1
    do
       --x, y, startX, endX, startY, scale, waterLevel
       local startX = 500
@@ -333,7 +356,7 @@ function love.load()
       local scale = map(y, startY, endY, 0.8, 1.3)
 
       local bird = nil;
-      if (love.math.random() < 0.5) then
+      if (love.math.random() < 0.7) then
          if (love.math.random() < 0.5) then
             if (love.math.random() < 0.5) then
                bird = makeMallardMale(x, y, startX, endX, y, scale, 175)
@@ -347,15 +370,50 @@ function love.load()
       else
          bird = makeGoose(x, y, startX, endX, y, scale, 160)
       end
+      bird.temp_canvas2 = love.graphics.newCanvas(400, 350)
       multiple_geese[i] = bird
+      --addChild(backdrop, bird.root)
 
    end
    table.sort(multiple_geese, compareY)
 
+   flyPlane(plane)
+   flyPlane(plane2)
+   --moveCloud(cloud1)
+   --moveCloud(cloud2)
+   --moveCloud(cloud3)
 
    startOrStopSwimming('start')
-   pause = false
+   --pause = true
    all_asleep = false
+end
+
+-- function moveCloud(cloud)
+--    local function closure() moveCloud(cloud) end
+--    flux.to(cloud.local_transform.position, love.math.random(60, 120), {x=love.math.random(2048), y=love.math.random(500)}):oncomplete(closure)
+-- end
+
+
+
+function flyPlane(plane, delay)
+   local function closure()
+      local new_scale = love.math.random(0.1, 0.6)
+      plane.local_transform.position.y = 700--love.math.random(0, 800)
+      plane.local_transform.scale.x = new_scale
+      plane.local_transform.scale.y = new_scale
+      if (plane.local_transform.position.x > 2048) then plane.local_transform.scale.x = plane.local_transform.scale.x * -1 end
+      flyPlane(plane, true)
+   end
+
+   local my_delay = 0;
+   if delay then my_delay = 5 end
+   if plane.local_transform.position.x < 1024 then
+      -- we fly out of the screen to the right
+      flux.to(plane.local_transform.position, 6 / plane.local_transform.scale.y, {x=2500}):delay(my_delay):oncomplete(closure)
+   else
+      -- we fly out to the left
+      flux.to(plane.local_transform.position, 6 / plane.local_transform.scale.y, {x=-500}):oncomplete(closure)
+   end
 end
 
 
@@ -408,10 +466,29 @@ end
 
 
 function quak(geese3)
-   flux.to(geese3.beak_top.local_transform, 0.4, {radian=math.rad(10)})
-   flux.to(geese3.beak_top.local_transform, 0.2, {radian=math.rad(-20)}):delay(0.4)
-   flux.to(geese3.beak_bottom.local_transform, 0.4, {radian=math.rad(-10)})
-   flux.to(geese3.beak_bottom.local_transform, 0.2, {radian=math.rad(10)}):delay(0.4)
+   if geese3.sound_instance then
+      geese3.sound_instance:stop()
+   end
+   if (geese3.type == 'goose') then
+      geese3.sound_instance = geese_honk1:play()
+      geese3.sound_instance:setPitch(.95 + love.math.random() * .1)
+   elseif (geese3.type == 'mallard') then
+      geese3.sound_instance = duck_honk1:play()
+      geese3.sound_instance:setPitch(.95 + love.math.random() * .1)
+   elseif (geese3.type == 'chick') then
+      geese3.sound_instance = duck_honk1:play()
+      geese3.sound_instance:setPitch(1.5 + love.math.random() * .1)
+   end
+
+
+
+   local multiplier = 1
+   if (geese3.type == 'mallard' or geese3.type == 'chick') then multiplier = 0.5 end
+
+   flux.to(geese3.beak_top.local_transform, 0.4*multiplier, {radian=math.rad(10)})
+   flux.to(geese3.beak_top.local_transform, 0.2*multiplier, {radian=math.rad(-20)}):delay(0.4)
+   flux.to(geese3.beak_bottom.local_transform, 0.4*multiplier, {radian=math.rad(-10)})
+   flux.to(geese3.beak_bottom.local_transform, 0.2*multiplier, {radian=math.rad(10)}):delay(0.4)
 end
 
 function blinkEyesOccasionaly(geese2)
@@ -436,7 +513,6 @@ end
 
 
 function swim(geese2)
-   --local distance = (geese2.endX - geese2.startX)
    local function closure() swim(geese2) end
 
    if (geese2.x == geese2.startX) then
@@ -487,6 +563,7 @@ end
 function love.update(dt)
    if love.keyboard.isDown("escape") then love.event.quit() end
    if pause then return end
+
    lovebird.update()
    for i, g in ipairs(multiple_geese) do
       g.old_x = g.x
@@ -524,6 +601,10 @@ function love.update(dt)
    day_music:setVolume(day_volume)
    night_music:setVolume(night_volume)
 
+   plane_light_white.color = {255,255,255, clamp(255 * (night_volume*1.5), 0, 255)}
+   plane_light_red.color = {255,0,0, clamp(255 * (night_volume*1.5), 0, 255)}
+   plane2_light_white.color = {255,255,255, clamp(255 * (night_volume*1.5), 0, 255)}
+   plane2_light_red.color = {255,0,0, clamp(255 * (night_volume*1.5), 0, 255)}
 
    if (sun.local_transform.position.y > moon.local_transform.position.y and  not all_asleep) then
       all_asleep = true
@@ -532,6 +613,25 @@ function love.update(dt)
       all_asleep = false
       startOrStopSwimming('start')
    end
+
+   cloud1.local_transform.position.x = cloud1.local_transform.position.x + love.math.random()/10.0
+   if cloud1.local_transform.position.x > 2500 then
+      cloud1.local_transform.position.x = -500
+      cloud1.local_transform.position.y = love.math.random(0,500)
+   end
+   cloud2.local_transform.position.x = cloud2.local_transform.position.x + love.math.random()/10.0
+   if cloud2.local_transform.position.x > 2500 then
+      cloud2.local_transform.position.x = -500
+      cloud2.local_transform.position.y = love.math.random(0,500)
+   end
+   cloud3.local_transform.position.x = cloud3.local_transform.position.x + love.math.random()/10.0
+   if cloud3.local_transform.position.x > 2500 then
+      cloud3.local_transform.position.x = -500
+      cloud3.local_transform.position.y = love.math.random(0,500)
+   end
+
+
+
 end
 
 function love.mousemoved( x, y, dx, dy)
@@ -557,22 +657,42 @@ function love.mousepressed(x, y, button)
    local x1, y1 = push:toGame(x, y)
    local pressed_goose = nil
    for i, g in ipairs(multiple_geese) do
-      if (g.geese_canvas) then
-         if pointInCircle(x1, y1, g.geese_canvas.body_circle) or pointInCircle(x1, y1, g.geese_canvas.head_circle)  then
-             pressed_goose = g;
+
+
+      if (g.geese_canvas and (g.torso.local_transform.radian == 0)) then
+         if ((g.geese_canvas.body_circle and pointInCircle(x1, y1, g.geese_canvas.body_circle)) or
+            (g.geese_canvas.head_circle and pointInCircle(x1, y1, g.geese_canvas.head_circle))) then
+                 pressed_goose = g
          end
       end
    end
 
    if (pressed_goose) then
-      if pressed_goose.sound_instance then
-         pressed_goose.sound_instance:stop()
-      end
-      pressed_goose.sound_instance = geese_honk1:play()
-      pressed_goose.sound_instance:setPitch(.95 + love.math.random() * .1)
+
+      -- if pressed_goose.sound_instance then
+      --    pressed_goose.sound_instance:stop()
+      -- end
+      -- if (pressed_goose.type == 'goose') then
+      --    pressed_goose.sound_instance = geese_honk1:play()
+      --    pressed_goose.sound_instance:setPitch(.95 + love.math.random() * .1)
+      -- elseif (pressed_goose.type == 'mallard') then
+      --    pressed_goose.sound_instance = duck_honk1:play()
+      --    pressed_goose.sound_instance:setPitch(.95 + love.math.random() * .1)
+      -- elseif (pressed_goose.type == 'chick') then
+      --    pressed_goose.sound_instance = duck_honk1:play()
+      --    pressed_goose.sound_instance:setPitch(1.5 + love.math.random() * .1)
+      -- end
+
+
+
       if (love.math.random() < 0.9) then
          quak(pressed_goose)
       else
+         if pressed_goose.sound_instance then
+          pressed_goose.sound_instance:stop()
+         end
+         pressed_goose.sound_instance = splash1:play()
+         pressed_goose.sound_instance:setPitch(.95 + love.math.random() * .1)
          assInSky(pressed_goose)
       end
    end
@@ -601,16 +721,24 @@ function love.mousereleased(x, y, button)
 end
 
 function getGradientedGeeseCanvas(geese2)
-   canvas = love.graphics.newCanvas(500, 250)
-   love.graphics.setCanvas(canvas)
+   --canvas = love.graphics.newCanvas(400, 350)
+
+   love.graphics.setCanvas(geese2.temp_canvas2)
    love.graphics.clear()
+
+
    love.graphics.setColor(0xff,0xff,0xff)
+
    recursiveDraw(geese2.root)
-   love.graphics.setBlendMode("multiply")
-   love.graphics.draw(geese2.gradient.img, 0,  geese2.waterlevel.y, 0, 1, 1, 0, 0)
+   --love.graphics.setBlendMode("alpha", "premultiplied")
+
+   love.graphics.setBlendMode("subtract")
+   if (geese2.gradient.img) then
+      love.graphics.draw(geese2.gradient.img, 0,  geese2.waterlevel.y, 0, 1, 1, 0, 0)
+   end
    love.graphics.setBlendMode("alpha")
    love.graphics.setCanvas()
-   return canvas
+   return geese2.temp_canvas2
 end
 
 function love.draw()
@@ -620,21 +748,32 @@ function love.draw()
       g.temp_canvas = getGradientedGeeseCanvas(g)
    end
 
+   removeChild(backdrop, foreground)
+
    for i, g in ipairs(multiple_geese) do
-      geese_canvas = getDisplayObject(g.temp_canvas, g.x, g.y, 250, 200)
+      geese_canvas = getDisplayObject(g.temp_canvas,nil, g.x, g.y, 250, 200)
       geese_canvas.local_transform.scale.x = g.scaleX
       geese_canvas.local_transform.scale.y = g.scaleY
-      geese_canvas.premultiply= true
+      geese_canvas.premultiply = true
 
 
       addChild(backdrop, geese_canvas)
+      local radius = 80;
+      if g.type == 'chick' then radius = 50 end
+      if g.type == 'mallard' then radius = 70 end
+
+
       geese_canvas.body_circle = {x=geese_canvas.local_transform.position.x,
                                   y=geese_canvas.local_transform.position.y + ( g.scaleY * -50),
-                                  radius= 80 * g.scaleY}
+                                  radius= radius * g.scaleY}
 
-      geese_canvas.head_circle = {x=geese_canvas.local_transform.position.x  + (g.scaleX * -50),
-                                  y=geese_canvas.local_transform.position.y + (g.scaleY * -150),
-                                  radius=50 * g.scaleY}
+      if (g.type == 'goose') then
+         geese_canvas.head_circle = {x=geese_canvas.local_transform.position.x  + (g.scaleX * -50),
+                                     y=geese_canvas.local_transform.position.y + (g.scaleY * -150),
+                                     radius=50 * g.scaleY}
+      else
+         geese_canvas.head_circle = nil
+      end
       g.geese_canvas = geese_canvas
    end
 
@@ -644,13 +783,19 @@ function love.draw()
    local t = map(sun.local_transform.position.y, 200, love.graphics.getHeight(), 0, 1)
    drawSkyGradientAndSetFGColor(clamp(t, 0, 1))
 
+   addChild(backdrop, foreground)
+
    recursiveDraw(backdrop)
 
    -- for i, g in ipairs(multiple_geese) do
-   --    love.graphics.setColor(0xff,0x00,0xff)
-   --    love.graphics.circle("fill", g.geese_canvas.body_circle.x, g.geese_canvas.body_circle.y, g.geese_canvas.body_circle.radius, 40);
-   --    love.graphics.setColor(0xff,0x00,0x00)
-   --    love.graphics.circle("fill", g.geese_canvas.head_circle.x, g.geese_canvas.head_circle.y, g.geese_canvas.head_circle.radius, 40);
+   --    if  g.geese_canvas.body_circle then
+   --       love.graphics.setColor(0xff,0x00,0xff, 0x88)
+   --       love.graphics.circle("fill", g.geese_canvas.body_circle.x, g.geese_canvas.body_circle.y, g.geese_canvas.body_circle.radius, 40);
+   --    end
+   --    if g.geese_canvas.head_circle then
+   --       love.graphics.setColor(0xff,0x00,0x00, 0x88)
+   --       love.graphics.circle("fill", g.geese_canvas.head_circle.x, g.geese_canvas.head_circle.y, g.geese_canvas.head_circle.radius, 40);
+   --    end
    -- end
 
    for i, g in ipairs(multiple_geese) do
